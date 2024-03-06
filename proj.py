@@ -5,6 +5,7 @@ import random
 player_health = 10
 player_position = 0
 map_open = False
+#test edit
 def draw_screen():
     pass
 
