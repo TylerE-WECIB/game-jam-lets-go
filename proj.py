@@ -2,7 +2,17 @@ import os
 import time
 import random
 # import keyboard
+player_health = 10
+player_position = 0
+map_open = False
+def draw_screen():
+    pass
 
+def draw_menu():
+    pass
+
+def draw_map():
+    pass
 player_name = input("Who are ya? ")
 
 time.sleep(0.5)
