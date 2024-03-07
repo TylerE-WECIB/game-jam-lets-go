@@ -101,7 +101,35 @@ def fight(player_health, enemy_health, battle):
                 print(f"YOU: {player_health} ENEMY: {enemy_health}")
                 print("YOU LOSE!")
                 return "lose"
+    if battle == 3:
+        os.system('cls')
+        print(f"YOU: {player_health} ENEMY: {enemy_health}")
+        print("WISE GUY PULLS UP")
+        while True:
 
+            #wise guy fight
+            choice = input("ANSWER THE RIDDLE! ")
+            if "man" not in choice:
+                damage = random.randint(1,4)
+                print("WRONG STUPID!")
+                time.sleep(1)
+                print(f"TOOK {damage} DAMAGE!")
+                player_health -= damage
+
+                if player_health <= 0:
+                    player_health = 0
+                    os.system('cls')
+                    print(f"YOU: {player_health} ENEMY: {enemy_health}")
+                    print("YOU LOSE!")
+                    return "lose"
+            else:
+                print("NO WAY!")
+                time.sleep(1)
+                print("YOU WIN!")
+                return "win"
+if fight(10, 1, 3) == "lose":
+    quit()
+time.sleep(3)
 if fight(15, 10, 1) == "lose":
     quit()
 time.sleep(3)
