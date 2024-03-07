@@ -1,10 +1,10 @@
 import os
 x = [
-    "1", "2", "3", "4", "5",
-    "6", "7", "8", "9", "10",
-    "11", "12", "13", "14", "15",
-    "16", "17", "18", "19", "20",
-    "21", "22", "23", "24", "25"
+    "0", "1", "2", "3", "4",
+    "5", "6", "7", "8", "9",
+    "10", "11", "12", "13", "14",
+    "15", "16", "17", "18", "19",
+    "20", "21", "22", "23", "24"
 ]
 
 g=0
@@ -12,47 +12,32 @@ print(x[g])
 y=0
 while y==0:
     try:
+
         o=input("Pick right:")
-        if o.lower() =="right":
+        if o.lower() =="right" and g not in [4, 9, 14, 19 ,24]:
             os.system('cls')
 
-            if g>=0:
-                g += 1
-                print(x[g])
+            g += 1
+            print(x[g])
 
-            else:
-                print("ty again")
-
-
-        elif o.lower()=="left":
+        elif o.lower()=="left" and g not in [0,5,10,20]:
             os.system('cls')
 
-            if g>=0:
-                g -= 1
-                print(x[g])
+            g -= 1
+            print(x[g])
 
-            else:
-                print("ty again")
-
-        elif o.lower()=="down":
+        elif o.lower()=="down" and g not in [20,21,22,23,24]:
             os.system('cls')
 
-            if g>=0:
-                g += 5
-                print(x[g])
+            g += 5
+            print(x[g])
 
-            else:
-                print("ty again")
-
-        elif o.lower()=="up":
+        elif o.lower()=="up" and g not in [0,1,2,3,4]:
             os.system('cls')
 
-            if g>=0:
-                g -= 5
-                print(x[g])
+            g -= 5
+            print(x[g])
 
-            else:
-                print("ty again")
         else:
             print("try again:")
     except:
