@@ -393,8 +393,8 @@ def fight(player_health, enemy_health, battle):
             choice = input("ANSWER THE RIDDLE!: ")
             if "man" not in choice:
                 damage = random.randint(1,4)
-                print("WRONG BOZO!")
-                time.sleep(1)
+                print("WRONG BOZO! YOU THINK YOU CAN WIN? FUHGEDDABOUDIT!")
+                time.sleep(2)
                 print(f"TOOK {damage} DAMAGE!")
                 player_health -= damage
                 time.sleep(1)
