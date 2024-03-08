@@ -2,6 +2,7 @@ import os
 import time
 import random
 import proj
+import mother
 
 
 def main():
@@ -19,7 +20,7 @@ def main():
     os.system('cls')
     print('')
     scene1(player_health, player_sanity, player_name, player_inventory, player_money)
-
+    scene2(player_health, player_sanity, player_inventory, player_name)
 
 def inventory_ui(inventory, health, money):
     print(inventory)
@@ -42,6 +43,10 @@ def inventory_ui(inventory, health, money):
                     print('You added $50 to your pocket')
                     inventory.remove('wallet')
                     money += 50
+                elif player_choice == 'weapon':
+                    print('You dropped the weapon on your foot')
+                    inventory.remove('weapon')
+                    health -= 3
                 else:
                     print(f'You can use that item.')
                     player_choice = input(': ').lower()
@@ -78,7 +83,7 @@ def scene1(health, sanity, name, inventory, money):
     objective = False  # Objective: Defeat Peter Griffin
     os.system('cls')
     time.sleep(.5)
-    game_time = '7:30 pm'
+    game_time = '6:30 pm'
     for i in game_time:
         print(i, end='')
         time.sleep(.2)
@@ -137,7 +142,7 @@ def scene1(health, sanity, name, inventory, money):
                 sanity -= 2
                 time.sleep(1)
                 print(f'sanity: {sanity}')
-                time.sleep(1)
+                time.sleep(.5)
                 break
 
         # If player does not fight, player has 100% success chance
@@ -148,15 +153,15 @@ def scene1(health, sanity, name, inventory, money):
             time.sleep(.5)
             print('     Victory Royale!')
             time.sleep(.5)
-            inventory.append('Crown')
+            inventory.append('crown')
             print('\nCrown added to inventory.')
-            time.sleep(2)
+            time.sleep(1)
 
             objective = True
             break
 
         elif player_choice == 'i':
-            inventory_ui(inventory)
+            inventory_ui(inventory, health, money)
             player_choice = input('\n1. Push, they\'re a bot   2. Warn your squad   i. Check inventory\n: ').lower()
 
         else:
@@ -209,7 +214,7 @@ def scene1(health, sanity, name, inventory, money):
     print('''            ╭───────────────────────────────────────╮
             |                                       |
             |                                       |
-            |                 7:43pm                |
+            |                 7:35pm                |
             |                                       |
             |                                       |
             |                                       |
@@ -251,26 +256,26 @@ def scene1(health, sanity, name, inventory, money):
 
 
 
-                        Today 5:34 pm
+                        Today 7:35 pm
 
         Remember to get the groceries before I get home {name}.
         List is on the fridge.
 
             ''')
-    time.sleep(1)
+    time.sleep(2)
     input('[TAP] Enter to Get up')
 
     # Continue story line
     os.system('cls')
     time.sleep(.5)
-    game_time = '8:00 pm'
+    game_time = '7:40 pm'
     for i in game_time:
         print(i, end='')
         time.sleep(.2)
     print('\n')
 
     print(
-        '     Mom gets home at 10 pm, so you decide to start heading to the grocery store right away', end=''), input()
+        '     Mom gets home at 9 pm, so you decide to start heading to the grocery store right away', end=''), input()
     print('     before you leave your room, you pause and decide to take a few items with you')
     time.sleep(.5)
     input('\n[TAP] Enter to look around your bedroom')
@@ -294,7 +299,7 @@ def scene1(health, sanity, name, inventory, money):
         elif player_choice == 'x':
             break
         elif player_choice == 'i':
-            inventory_ui(inventory)
+            inventory_ui(inventory, health, money)
             player_choice = input(
                 '\n[Enter] Item to inspect\n\nWeapon\nPizza\nWallet\nx. leave\ni. inventory\n: ').lower()
         else:
@@ -318,8 +323,8 @@ def scene1(health, sanity, name, inventory, money):
             break
         elif player_choice == '1':
             print('''     Remembering your mother\'s assignment, You swiftly walk past the foyer in front of the stairs
-            and make your way into the kitchen'''), input()
-            print('You pause at the fridge')
+     and make your way into the kitchen'''), input()
+            print('     You pause at the fridge')
             time.sleep(.5)
             player_choice = input('1. Open Fridge  2. Inspect note  x. Leave House\n: ').lower()
             time.sleep(.5)
@@ -335,17 +340,19 @@ def scene1(health, sanity, name, inventory, money):
                         break
                 elif player_choice == '1':
                     print('You open the fridge to see ')
-                    print('\n[Enter] Item to inspect\n\nCheese\nPizza\nsomething\nx. Nothing\n')
+                    print('\n[Enter] Item to inspect\n\nCheese\nPizza\nsomething\nx. Close fridge\n')
                     player_choice = input(': ').lower()
-                    # fix this
-                    if player_choice in fridge:
-                        time.sleep(1)
-                        inventory.append(player_choice)
-                        print(f'{player_choice} added to inventory!')
-                        player_choice = input(': ').lower()
-                    else:
-                        print(f'You dont see any {player_choice}')
-                        player_choice = input(': ').lower()
+                    while player_choice:
+                        if player_choice in fridge:
+                            time.sleep(1)
+                            inventory.append(player_choice)
+                            print(f'{player_choice} added to inventory!')
+                            player_choice = input(': ').lower()
+                        elif player_choice == 'x':
+                            break
+                        else:
+                            print(f'You dont see any {player_choice}')
+                            player_choice = input(': ').lower()
                 elif player_choice == '2':
                     print('You pick up the note your mother left you. .\n')
                     time.sleep(2)
@@ -365,16 +372,14 @@ def scene1(health, sanity, name, inventory, money):
                     player_choice = input('1. Open Fridge  2. Inspect note\n: ')
         else:
             player_choice = input('1. Enter Kitchen  2. Leave House: ')
-    scene2(health, sanity, inventory, name)
-    scene3(health, sanity, inventory, grocery_list)
-    return objective
+        scene2(health, sanity, inventory, name)
 
 
 # Scene 2: NYC streets, user may enter map and grocery store, and encounter random battles
 def scene2(health, sanity, inventory, name):
     objective = False  # objective: Read Mothers text message
     os.system('cls')
-    game_time = '8:00 pm'
+    game_time = '7:50 pm'
     for i in game_time:
         print(i, end='')
         time.sleep(.2)
@@ -382,9 +387,9 @@ def scene2(health, sanity, inventory, name):
     print('You step off your front porch and start down new york city', end=''), input()
     print('Your phone chimes as you lift it to check the notification')
     time.sleep(1)
-    print('''╭───────────────────────────────────────╮
-
-    |                 8:10 pm               |
+    print('''     ╭───────────────────────────────────────╮
+    |                                       |
+    |                 7:50 pm               |
     |                                       |
     |                                       |
     |                                       |
@@ -394,8 +399,8 @@ def scene2(health, sanity, inventory, name):
     |                                       |
     |                                       |
     |                                       |    
-    |        Mom                 now        |
-    |        1 Attachment                   |
+    |                                       |
+    |                                       |
     |                                       |
     |        Mom                 now        |
     |        3 Text Messages                |
@@ -427,9 +432,8 @@ def scene2(health, sanity, inventory, name):
 
 
 
-                        Today 8:20 pm
+                        Today 7:50 pm
 
-        [ascii image of front door camera]
 
         Did you have a friend over?
         Who was it that you left the house with?
@@ -463,77 +467,87 @@ def scene2(health, sanity, inventory, name):
     # Continue storyline en route store
     proj.run_game()
 
-
-# Scene 3: Grocery store, user may encounter battle with ninja tutle
-def scene3(health, sanity, inventory, grocery_list):
-    grocery_store, cart = [['chicken', 'turkey', 'filet mignon'],
-                           ['bread', 'milk', '2% milk', 'eggs', 'cheese', 'yogurt']], []
-    objective = False
-    os.system('cls')
     time.sleep(.5)
-    game_time = '8:40 pm'
+    game_time = '7:40 pm'
     for i in game_time:
         print(i, end='')
         time.sleep(.2)
     print('\n')
 
-    if grocery_list in inventory:
-        print(
-            '     As you enter the grocery store, you pull out the list you grabbed before you left the house', end='')
-        input()
-        player_choice = input('1. inventory   x.  Close\n: ').lower()
-        while player_choice:
-            os.system('cls')
-
-            if player_choice == 'i':
-                inventory_ui(inventory)
-                break
-            elif player_choice == 'x':
-                break
-            else:
-                player_choice = input('1. Look at Shopping List   x.  Close\n: ').lower()
-        time.sleep(.5)
-
-    else:
-        print('     As you enter the grocery store you make your way across the aisle collecting food ', end='')
-        time.sleep(.5)
-
-    print('[Enter] department name to shop')
-    player_choice = input('Deli\nDairy\n   1.  Check out\n   i. inventory: ').lower()
-    while player_choice.lower():
-        os.system('cls')
-        if player_choice == '1':
-            total = [cart * 5 for i in cart]
-            print('Receipt\n')
-            for i in cart:
-                print(' ', i)
-
-        elif player_choice == 'deli' or 'dairy':
-            print(f'     Welcome to the {player_choice} department!')
-            while True:
-                if player_choice == 'deli':
-                    for i in grocery_store[0]:
-                        print(i)
-                    choice = input('\n[Enter] Item to add to cart\n: ').lower()
-                    cart = [choice if choice in grocery_store[0] else input(
-                        f'You dont see any {choice} in the {player_choice}\n')]
-                    choice = input(': ').lower()
-                elif player_choice == 'dairy':
-                    for i in grocery_store[2]:
-                        print(i)
-                    choice = input('\n[Enter] Item to add to cart\n: ')
-                    cart = [choice if choice in grocery_store[1] else input(
-                        f'You dont see any {choice} in the {player_choice}\n')]
-                    print(f'{choice} added to shopping cart')
-                    choice = input(': ').lower()
-                else:
-                    print(f'You dont see a {player_choice} department')
-                    player_choice = input(': ').lower()
-        elif player_choice == 'i':
-            inventory_ui(inventory)
-            player_choice = input('Deli\nProduce\nDairy\n   x.  Leave Store\n   i. inventory: ').lower()
-        else:
-            player_choice = input('Deli\nProduce\nDairy\n   x.  Leave Store\n   i. inventory: ').lower()
-
 
 main()
+
+# Scene 3: Grocery store, user may encounter battle with ninja tutle
+# def scene3(health, sanity, inventory, grocery_list, money):
+#     dairy, deli = ['chicken', 'turkey', 'filet mignon'], ['bread', 'milk', '2% milk', 'eggs', 'cheese', 'yogurt']
+#     cart = []
+#
+#     objective = False
+#     os.system('cls')
+#     time.sleep(.5)
+#     game_time = '7:40 pm'
+#     for i in game_time:
+#         print(i, end='')
+#         time.sleep(.2)
+#     print('\n')
+#
+
+#     if grocery_list in inventory:
+#         print(
+#            '     As you enter the grocery store, you pull out the list you grabbed before you left the house', end='')
+#         input()
+#         player_choice = input('1. inventory   x.  Close\n: ').lower()
+#         while player_choice:
+#             os.system('cls')
+#
+#             if player_choice == 'i':
+#                 inventory_ui(inventory, health, money)
+#                 break
+#             elif player_choice == 'x':
+#                 break
+#             else:
+#                 player_choice = input('1. Look at Shopping List   x.  Close\n: ').lower()
+#         time.sleep(.5)
+#
+#     else:
+#         print('     As you enter the grocery store you make your way across the aisle collecting food\n', end='')
+#         time.sleep(.5)
+#
+#     print('[Enter] department name to shop')
+#     player_choice = input('Deli\nDairy\n1.  Check out\ni. inventory\n: ').lower()
+#     while player_choice.lower():
+#         os.system('cls')
+#         if player_choice == '1':
+#             total = [cart * 5 for i in cart]
+#             print('Receipt\n')
+#             for i in cart:
+#                 print(' ', i)
+#         if player_choice == 'deli':
+#             print(f'     Welcome to the deli department!')
+#             for i in deli:
+#                 print(i)
+#             choice = input('\n[Enter] Item to add to cart\n: ').lower()
+#             while choice:
+#                 if choice in deli:
+#                     cart.append(choice)
+#                 else:
+#                     input(f'You dont see any {choice} in the {player_choice}\n')
+#                 choice = input(': ').lower()
+#         if player_choice == 'dairy':
+#             print(f'     Welcome to the deli department!')
+#             for i in dairy:
+#                 print(i)
+#             choice = input('\n[Enter] Item to add to cart\n: ').lower()
+#             while choice:
+#                 if choice in dairy:
+#                     cart.append(choice)
+#                 else:
+#                     input(f'You dont see any {choice} in the {player_choice}\n')
+#                 choice = input(': ').lower()
+#         elif player_choice == 'i':
+#             inventory_ui(inventory, inventory, money)
+#             player_choice = input('Deli\nProduce\nDairy\n   x.  Leave Store\n   i. inventory: ').lower()
+#         else:
+#             player_choice = input('Deli\nProduce\nDairy\n   x.  Leave Store\n   i. inventory: ').lower()
+#
+#
