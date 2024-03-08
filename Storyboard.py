@@ -1,6 +1,7 @@
 import os
 import time
 import random
+import proj
 
 
 def main():
@@ -17,12 +18,12 @@ def main():
     input("[TAP] Enter to start!")
     os.system('cls')
     print('')
-    scene1(player_health, player_sanity, player_name, player_inventory)
+    scene1(player_health, player_sanity, player_name, player_inventory, player_money)
 
 
-def inventory_ui(inventory):
+def inventory_ui(inventory, health, money):
     print(inventory)
-    player_choice = input('1. Use   2. Modify  x. Close')
+    player_choice = input('1. Use   2. Modify  x. Close').lower()
     while player_choice:
         os.system('cls')
         if player_choice == '1':
@@ -32,9 +33,15 @@ def inventory_ui(inventory):
                 if player_choice == 'pizza':
                     print('You used pizza')
                     inventory.remove('pizza')
+                    health += 5
                 elif player_choice == 'cheese':
                     print('You used cheese')
                     inventory.remove('cheese')
+                    health += 2
+                elif player_choice == 'wallet':
+                    print('You added $50 to your pocket')
+                    inventory.remove('wallet')
+                    money += 50
                 else:
                     print(f'You can use that item.')
                     player_choice = input(': ').lower()
@@ -63,9 +70,8 @@ def inventory_ui(inventory):
 
 
 # Scene 1: home, user may enter room and kitchen
-def scene1(health, sanity, name, inventory):
-    wallet = 50
-    room, fridge = ['weapon', 'pizza', wallet], ['cheese', 'pizza']
+def scene1(health, sanity, name, inventory, money):
+    room, fridge = ['weapon', 'pizza', 'wallet'], ['cheese', 'pizza']
     grocery_list = ['bread', 'milk', 'eggs', 'cheese', 'yogurt']
 
     # objective = False until an objective has been met
@@ -89,7 +95,7 @@ def scene1(health, sanity, name, inventory):
     time.sleep(1)
 
     # player choice 1 : Fight Peter Griffin to obtain useful item for later
-    player_choice = input('\n1. Push, they\'re a bot   2. Warn your squad   i. Check inventory\n: ')
+    player_choice = input('\n1. Push, they\'re a bot   2. Warn your squad   i. Check inventory\n: ').lower()
     while player_choice:
         os.system('cls')
 
@@ -101,12 +107,13 @@ def scene1(health, sanity, name, inventory):
             if outcome % 2 == 0:
                 print(
                     '     You managed to successfully finish him off', end=''), input()
-                print('Your friends were able to kill the rest of Peter Griffin\'s teammates\n')
-                time.sleep(.5)
+                print('     Your friends were able to kill the rest of Peter Griffin\'s teammates\n')
+                time.sleep(1)
                 print('     Victory Royale!')
                 time.sleep(.5)
                 inventory.append('Crown')
-                print('\nCrown added to inventory.'), input()
+                print('\nCrown added to inventory.')
+                time.sleep(1)
 
                 objective = True
                 break
@@ -123,8 +130,13 @@ def scene1(health, sanity, name, inventory):
                 print('     Since you did\'nt warn your friends and died, they blamed you for selling the game',
                       end=''), input()
                 print('     and kicked you from the discord server.')
+                time.sleep(1)
+                print('\nThis action will have consequences...')
                 time.sleep(.5)
-                print('\nThis action will have consequences...'), input()
+                print(f'sanity: {sanity}')
+                sanity -= 2
+                time.sleep(1)
+                print(f'sanity: {sanity}')
                 time.sleep(1)
                 break
 
@@ -145,17 +157,17 @@ def scene1(health, sanity, name, inventory):
 
         elif player_choice == 'i':
             inventory_ui(inventory)
-            player_choice = input('\n1. Push, they\'re a bot   2. Warn your squad   i. Check inventory\n: ')
+            player_choice = input('\n1. Push, they\'re a bot   2. Warn your squad   i. Check inventory\n: ').lower()
 
         else:
-            player_choice = input('\n1. push, they\'re a bot   2. Warn your squad\n: ')
+            player_choice = input('\n1. push, they\'re a bot   2. Warn your squad\n: ').lower()
     os.system('cls')
 
     # display ending based on user's prior choice
     if not objective:
         print(
             '     You feel the sudden urge to fight your friend as you slam your keyboard', end=''), input()
-        print('     As your key cap fly across the room and glance to there direction', end=''), input()
+        print('     As your key cap fly across the room and glance to their direction', end=''), input()
         print('     You notice you have\'nt closed your curtains yet')
         time.sleep(.5)
 
@@ -177,12 +189,14 @@ def scene1(health, sanity, name, inventory):
             time.sleep(.5)
             print(
                 '     Because the curtains were not closed, you felt the presence of someone watching you from outside')
-            time.sleep(.5)
+            time.sleep(2)
             print('This action will have consequences...')
             time.sleep(1)
-            print(f'sanity: {sanity}'), input()
-            sanity -= 2
             print(f'sanity: {sanity}')
+            sanity -= 2
+            time.sleep(1)
+            print(f'sanity: {sanity}')
+            time.sleep(2)
             break
 
         else:
@@ -217,7 +231,7 @@ def scene1(health, sanity, name, inventory):
     time.sleep(1)
 
     # force player choice 3: read text message from mom
-    player_choice = input('1. Read new message  x.  Close\n: ')
+    player_choice = input('1. Read new message  x.  Close\n: ').lower()
     while player_choice:
         os.system('cls')
         if player_choice == '1':
@@ -225,19 +239,10 @@ def scene1(health, sanity, name, inventory):
 
         # loop until player reads message
         elif player_choice == 'x':
-            print('Are you seriously going to leave your mom on read?')
-            choice = input('1. Yes   2. No\n: ')
-            while choice:
-                if choice == '1':
-                    print('Good, She raised you better than that')
-                    break
-                if choice == '2':
-                    print('Its already been 2 hours since she texted you, she will not be happy when she gets home')
-                    player_choice = input('1. Read new message  x.  idk\n: ')
-                    break
-
+            print('Its already been 2 hours since she texted you, she will not be happy when she gets home')
+            player_choice = input('1. Read new message  x.  Close\n: ').lower()
         else:
-            player_choice = input('1. Read new message  x.  Close\n: ')
+            player_choice = input('1. Read new message  x.  Close\n: ').lower()
     os.system('cls')
 
     print(f'''\n                     Mom
@@ -251,8 +256,7 @@ def scene1(health, sanity, name, inventory):
         Remember to get the groceries before I get home {name}.
         List is on the fridge.
 
-            Message:'''), input()
-    os.system('cls')
+            ''')
     time.sleep(1)
     input('[TAP] Enter to Get up')
 
@@ -274,37 +278,29 @@ def scene1(health, sanity, name, inventory):
     print('     As your gaze sweeps across the room, a few items catch your attention', end=''), input()
     print(
         '     you spot your wallet and a slice of pizza that you were saving for later on your desk,', end=''), input()
-    print('     and a weapon peaking from underneath your bed.', end='')
+    print('     and a weapon peaking from underneath your bed.\n', end='')
     time.sleep(1)
     player_choice = input('\n[Enter] Item to inspect\n\nWeapon\nPizza\nWallet\nx. Nothing\ni. inventory\n: ').lower()
     while player_choice:
         if player_choice in room:
-            time.sleep(1)
-            inventory.append(player_choice)
-            print(f'{player_choice} added to inventory!')
-            player_choice = input(': ')
+            if player_choice not in inventory:
+                time.sleep(1)
+                inventory.append(player_choice)
+                print(f'{player_choice} added to inventory!')
+                player_choice = input(': ').lower()
+            else:
+                print(f'{player_choice} already in inventory.')
+                player_choice = input(': ').lower()
         elif player_choice == 'x':
             break
         elif player_choice == 'i':
             inventory_ui(inventory)
+            player_choice = input(
+                '\n[Enter] Item to inspect\n\nWeapon\nPizza\nWallet\nx. leave\ni. inventory\n: ').lower()
         else:
             print(f'You dont see any {player_choice}')
-            player_choice = input(': ')
+            player_choice = input(': ').lower()
     time.sleep(1)
-
-    player_choice = input('Would you like to remove an item from your inventory?\n1. Yes   2. No\n: ')
-    while player_choice:
-        if player_choice == '1':
-            player_choice = input(f'Enter item you would like to remove\nInventory:{inventory}\n: ')
-            if player_choice in inventory:
-                inventory = inventory.remove(player_choice)
-            else:
-                print(f'{player_choice} is not in inventory')
-                player_choice = input(f'Enter item you would like to remove\nInventory:{inventory}\n: ')
-        elif player_choice == 'x':
-            break
-        else:
-            player_choice = input('Would you like to remove an item from your inventory')
 
     objective = False
     os.system('cls')
@@ -325,7 +321,7 @@ def scene1(health, sanity, name, inventory):
             and make your way into the kitchen'''), input()
             print('You pause at the fridge')
             time.sleep(.5)
-            player_choice = input('1. Open Fridge  2. Inspect note  x. Leave House\n: ')
+            player_choice = input('1. Open Fridge  2. Inspect note  x. Leave House\n: ').lower()
             time.sleep(.5)
             while player_choice:
                 os.system('cls')
@@ -346,21 +342,21 @@ def scene1(health, sanity, name, inventory):
                         time.sleep(1)
                         inventory.append(player_choice)
                         print(f'{player_choice} added to inventory!')
-                        player_choice = input(': ')
+                        player_choice = input(': ').lower()
                     else:
                         print(f'You dont see any {player_choice}')
-                        player_choice = input(': ')
+                        player_choice = input(': ').lower()
                 elif player_choice == '2':
                     print('You pick up the note your mother left you. .\n')
                     time.sleep(2)
-                    print('''   ______________
-             /              /
-            |  - Bread     |
-            |  - Milk      |
-            |  - Eggs      |
-            |  - Cheese    |
-            |  - Yogurt    |
-            |______________|'''), input()
+                    print('''             ______________
+                                 /              /
+                                |  - Bread     |
+                                |  - Milk      |
+                                |  - Eggs      |
+                                |  - Cheese    |
+                                |  - Yogurt    |
+                                |______________|'''), input()
                     objective = True
                     inventory.append(grocery_list)
                     print(f'Grocery list added to inventory!')
@@ -370,7 +366,7 @@ def scene1(health, sanity, name, inventory):
         else:
             player_choice = input('1. Enter Kitchen  2. Leave House: ')
     scene2(health, sanity, inventory, name)
-    scene3(health, sanity, inventory, grocery_list, name)
+    scene3(health, sanity, inventory, grocery_list)
     return objective
 
 
@@ -406,7 +402,7 @@ def scene2(health, sanity, inventory, name):
     |                                       |
     ╰───────────────────────────────────────╯''')
     time.sleep(.5)
-    player_choice = input('1. Read new message   x.  Close\n: ')
+    player_choice = input('1. Read new message   x.  Close\n: ').lower()
     while player_choice:
         os.system('cls')
         if player_choice == 'x':
@@ -441,29 +437,38 @@ def scene2(health, sanity, inventory, name):
         Message:'''), input()
             break
         else:
-            player_choice = input('1. Read new message   x.  Close\n: ')
+            player_choice = input('1. Read new message   x.  Close\n: ').lower()
 
     os.system('cls')
     if objective:
-        print('     bad ending here', end='')
-        input()
-        print('     more bad ending')
         time.sleep(.5)
+        print('     You become more anxious at the fact that someone that was once in your house, is now following you')
+        time.sleep(1)
+        print(f'sanity: {sanity}')
+        sanity -= 4
+        time.sleep(.5)
+        print(f'sanity: {sanity}')
+        os.system('cls')
+        print(f'sanity: BAD')
+        os.system('cls')
+
     else:
-        print('     good ending here', end=''), input()
-        print('     more good ending')
-        time.sleep(.5)
+        print(
+            '     You put your phone away at the sight of your mother\'s name flashing across your screen', end='')
+        input()
+
+    print('     you leave your neighbourhood and start down the street to the grocery store'), input()
+    time.sleep(1)
+    # Import tyler's code
     # Continue storyline en route store
-    # ascii map
-    return objective
+    proj.run_game()
 
 
 # Scene 3: Grocery store, user may encounter battle with ninja tutle
-def scene3(health, sanity, inventory, grocery_list, name):
-    bread, milk, cheese, yogurt, chicken, eggs = 4, 4, 3, 1, 5, 2
+def scene3(health, sanity, inventory, grocery_list):
     grocery_store, cart = [['chicken', 'turkey', 'filet mignon'],
-                           [bread, milk, '2% milk', eggs, cheese, yogurt]], []
-
+                           ['bread', 'milk', '2% milk', 'eggs', 'cheese', 'yogurt']], []
+    objective = False
     os.system('cls')
     time.sleep(.5)
     game_time = '8:40 pm'
@@ -473,73 +478,62 @@ def scene3(health, sanity, inventory, grocery_list, name):
     print('\n')
 
     if grocery_list in inventory:
-        print('     As you enter the grocery store, you pull out the list you grabbed before you left the house',
-              end=''
-              )
+        print(
+            '     As you enter the grocery store, you pull out the list you grabbed before you left the house', end='')
         input()
-        print('     more good ending')
-        time.sleep(.5)
-    else:
-        print('     As you enter the grocery store you make your way across the aisle collecting food ', end='')
-        input()
-        time.sleep(.5)
+        player_choice = input('1. inventory   x.  Close\n: ').lower()
+        while player_choice:
+            os.system('cls')
 
-    print('     As you you enter the grocery store you pull out the list ', end='')
-    print('[Enter] department name to shop')
-    player_choice = input('Deli\nProduce\nDairy\n1. Look at Shopping List   x.  Leave Store\n: ')
-    while player_choice:
-        os.system('cls')
-        if player_choice == 'x':
-            if len(cart) > 0:
+            if player_choice == 'i':
+                inventory_ui(inventory)
+                break
+            elif player_choice == 'x':
                 break
             else:
-                time.sleep(.5)
-                print('This action will have consequences...')
-                time.sleep(1)
-                break
+                player_choice = input('1. Look at Shopping List   x.  Close\n: ').lower()
+        time.sleep(.5)
+
+    else:
+        print('     As you enter the grocery store you make your way across the aisle collecting food ', end='')
+        time.sleep(.5)
+
+    print('[Enter] department name to shop')
+    player_choice = input('Deli\nDairy\n   1.  Check out\n   i. inventory: ').lower()
+    while player_choice.lower():
+        os.system('cls')
+        if player_choice == '1':
+            total = [cart * 5 for i in cart]
+            print('Receipt\n')
+            for i in cart:
+                print(' ', i)
+
         elif player_choice == 'deli' or 'dairy':
             print(f'     Welcome to the {player_choice} department!')
             while True:
-                if player_choice == 'Deli':
+                if player_choice == 'deli':
                     for i in grocery_store[0]:
                         print(i)
                     choice = input('\n[Enter] Item to add to cart\n: ').lower()
                     cart = [choice if choice in grocery_store[0] else input(
                         f'You dont see any {choice} in the {player_choice}\n')]
                     choice = input(': ').lower()
-                elif player_choice == 'Produce':
-                    for i in grocery_store[1]:
+                elif player_choice == 'dairy':
+                    for i in grocery_store[2]:
                         print(i)
                     choice = input('\n[Enter] Item to add to cart\n: ')
                     cart = [choice if choice in grocery_store[1] else input(
                         f'You dont see any {choice} in the {player_choice}\n')]
                     print(f'{choice} added to shopping cart')
                     choice = input(': ').lower()
-                elif player_choice == 'Dairy':
-                    for i in grocery_store[2]:
-                        print(i)
-                    choice = input('\n[Enter] Item to add to cart\n: ')
-                    cart = [choice if choice in grocery_store[2] else input(
-                        f'You dont see any {choice} in the {player_choice}\n')]
-                    print(f'{choice} added to shopping cart')
-                    choice = input(': ').lower()
                 else:
                     print(f'You dont see a {player_choice} department')
-                    player_choice = input(': ')
-        elif player_choice == '1':
-            print('\n')
-            time.sleep(2)
-            print('''   ______________
-                     /              /
-                    |  - Bread     |
-                    |  - Milk      |
-                    |  - Eggs      |
-                    |  - Cheese    |
-                    |  - Yogurt    |
-                    |______________|'''), input()
-            player_choice = input('Deli\nDairy\n1. Look at Shopping List   x.  Leave Store\n: ').lower()
+                    player_choice = input(': ').lower()
+        elif player_choice == 'i':
+            inventory_ui(inventory)
+            player_choice = input('Deli\nProduce\nDairy\n   x.  Leave Store\n   i. inventory: ').lower()
         else:
-            player_choice = input('Deli\nDairy\n1. Look at Shopping List   x.  Leave Store\n: ').lower()
+            player_choice = input('Deli\nProduce\nDairy\n   x.  Leave Store\n   i. inventory: ').lower()
 
 
 main()
