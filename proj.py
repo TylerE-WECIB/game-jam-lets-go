@@ -456,7 +456,7 @@ while travelling:
             player_position += 1
             draw_menu_travel(player_position)
 
-        elif o.lower()=="left" and player_position not in [0,5,10,20]:
+        elif o.lower()=="left" and player_position not in [0,5,10,15,20]:
             os.system('cls')
 
             player_position -= 1
