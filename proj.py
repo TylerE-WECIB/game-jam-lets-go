@@ -215,7 +215,7 @@ def draw_menu_travel(pos, clear = True):
 def fight(player_health, enemy_health, battle):
     global player_money
     screens = [f"""╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-║  THE FAT RAT                                                                                                         ║
+║  RAT DIMENSION: FAT RAT                                                                                              ║
 ║                                                                  <-__--------______                                  ║
 ║                                                                  _____‾‾‾‾‾-->     ‾‾‾‾--_                           ║
 ║                                                         __-- ‾ ‾       ____________       |                          ║
@@ -232,10 +232,10 @@ def fight(player_health, enemy_health, battle):
 ║                                                                 ‾‾‾‾---------\\    |  ‾‾   /                          ║
 ║                                                                              /|/\\/\\|    /                            ║
 ║                                                                                                                      ║
-║WHAT WILL YOU DO!?                                                                                                    ║
+║ PUNCH IT!                                                                                                            ║
 ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝""",
                f"""╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-║  NEW YORKER                                                             _-‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾--__                     ║
+║  THE STREETS: NEW YORKER                                                _-‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾--__                     ║
 ║                                                                       |                         |                    ║
 ║                                                                      | ----   /‾\\/‾\\  |\\  | \\ /  |                   ║
 ║                                                                     |    |    \\    /  | \\ |  |    |                  ║
@@ -252,10 +252,10 @@ def fight(player_health, enemy_health, battle):
 ║                                                                       \\                      /                       ║
 ║                                                                        --_     /‾‾‾‾\\      _-                        ║
 ║                                                                         /  --__________ --|                          ║
-║                                                                         |                 |                          ║
+║ PUNCH HIM!                                                              |                 |                          ║
 ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝""",
                f"""╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-║  WISE GUY                                                        ---------------__                                   ║
+║  GROCERY STORE: WISE GUY                                         ---------------__                                   ║
 ║                                                               /‾‾  _____-----_    ‾‾-_                               ║
 ║                                                               \\ --‾            \\      \\                              ║
 ║                                                               /                 |       \\                            ║
@@ -281,7 +281,7 @@ def fight(player_health, enemy_health, battle):
         print(screens[0])
         while True:
             #player turn
-            choice = input()
+            choice = input(": ")
             if choice.lower() == "punch":
                 print("punched da rat ")
                 damage = random.randint(0, 20)
@@ -335,7 +335,7 @@ def fight(player_health, enemy_health, battle):
         print(screens[1])
         while True:
             #player turn
-            choice = input()
+            choice = input(": ")
             if choice.lower() == "punch":
                 print("punched da new yorker ")
                 damage = random.randint(0, 20)
@@ -351,8 +351,6 @@ def fight(player_health, enemy_health, battle):
                     print("YOU WIN!")
                     time.sleep(2)
                     print("YOU GOT $50!")
-                    player_money += 50
-                    update_menu_travel()
                     time.sleep(2)
                     return "win"
 
@@ -387,19 +385,19 @@ def fight(player_health, enemy_health, battle):
                 time.sleep(2)
                 return "lose"
     if battle == 3:
-        os.system('cls')
-        print(f"YOU: {player_health} ENEMY: {enemy_health}")
-        print(screens[2])
         while True:
-
             #wise guy fight
-            choice = input("ANSWER THE RIDDLE! ")
+            os.system('cls')
+            print(f"YOU: {player_health} ENEMY: {enemy_health}")
+            print(screens[2])
+            choice = input("ANSWER THE RIDDLE!: ")
             if "man" not in choice:
                 damage = random.randint(1,4)
                 print("WRONG BOZO!")
                 time.sleep(1)
                 print(f"TOOK {damage} DAMAGE!")
                 player_health -= damage
+                time.sleep(1)
 
                 if player_health <= 0:
                     player_health = 0
@@ -420,9 +418,10 @@ def fight(player_health, enemy_health, battle):
 
 # olivia's movement code and game loop
 draw_menu_travel(player_position)
-y=0
 
-while y==0:
+travelling = True
+
+while travelling:
     # checking for fights
     if player_position in fight_rat:
         if fight(player_health, 10, 1) == "win":
@@ -431,7 +430,9 @@ while y==0:
             os.system('cls')
             player_position = 0
     elif player_position in fight_new_yorker:
-        if fight(player_health, 10, 2) == "win":
+        if fight(player_health, 15, 2) == "win":
+            player_money += 50
+            menu_travel = update_menu_travel()
             fight_new_yorker.remove(player_position)
         else:
             player_position = 0
@@ -442,6 +443,11 @@ while y==0:
             player_position = 0
     os.system('cls')
     draw_menu_travel(player_position)
+    if player_position == 2 and player_position not in fight_wise_guy:
+        if player_money < 200:
+            print("I need $200...")
+        else:
+            break
     try:
 
         o=input(": ")
@@ -468,8 +474,13 @@ while y==0:
             player_position -= 5
             draw_menu_travel(player_position)
 
+
         else:
             print("try again:")
     except:
         print("can't go there")
 
+os.system('cls')
+
+# mary 2nd part begins here
+print("end")
