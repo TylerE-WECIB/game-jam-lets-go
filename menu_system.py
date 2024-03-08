@@ -1,4 +1,3 @@
-#import keyboard
 import time
 import os
 
@@ -9,7 +8,7 @@ player_time = "7:00 PM"
 player_position = 0
 # need to implement different menu types. travel, combat, and dialogue
 player_name = "Tyler"
-menu_mode = "travel"
+
 
 # menu for playername box
 menu_name = f"""╔═{'═'*len(player_name)}═╗
@@ -201,22 +200,11 @@ f"""╔════════════════╦═══════�
 ║    |_____/     ║   [   ][   ][   ][   ][YOU]                                                    ║ TIME:     {str(player_time) + " "*(9-len(str(player_time)))}║
 ╚════════════════╩════════════════════════════════════════════════════════════════════════════════╩════════════════════╝"""]
 
-menu_screen = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
-# talk function for dialogue bits
-def talk(words, speed=0.05, newline=False, delay_to_next=1):
-    for letters in words:
-        print(letters, end="")
-        time.sleep(speed)
-
-    if newline is True:
-        print("\n", end="")
-    time.sleep(delay_to_next)
-
-# matches menu sprite index to player position variable. screen should also match
+def draw_menu_name():
+    print(menu_name)
 def draw_menu_travel(position = player_position):
     print(menu_travel[position])
-def draw_menu_screen(position = player_position):
-    print(menu_screen[position])
 
-draw_menu_screen()
+
+draw_menu_name()
 draw_menu_travel()
